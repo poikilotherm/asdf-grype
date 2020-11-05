@@ -1,5 +1,7 @@
 # asdf-grype
 
+![Main](https://github.com/poikilotherm/asdf-grype/workflows/Main/badge.svg?branch=main)
+
 An [asdf-vm.com](https://asdf-vm.com) plugin to install [anchore/grype](https://github.com/anchore/grype).
 
 ## Install
