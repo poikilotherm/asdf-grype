@@ -13,4 +13,4 @@ asdf plugin-add grype https://github.com/poikilotherm/asdf-grype.git
 ## Use
 
 Check out the [asdf readme](https://asdf-vm.com/#/core-manage-versions) for
-instructions on how to install and manage versions of *grype*.
+instructions on how to install and manage versions of _grype_.
