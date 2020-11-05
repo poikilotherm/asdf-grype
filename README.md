@@ -1,2 +1,14 @@
 # asdf-grype
-An asdf-vm.org plugin to install anchore/grype
+
+An [asdf-vm.com](https://asdf-vm.com) plugin to install [anchore/grype](https://github.com/anchore/grype).
+
+## Install
+
+```
+asdf plugin-add grype https://github.com/poikilotherm/asdf-grype.git
+```
+
+## Use
+
+Check out the [asdf readme](https://asdf-vm.com/#/core-manage-versions) for
+instructions on how to install and manage versions of *grype*.
