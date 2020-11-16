@@ -16,12 +16,15 @@ jobs:
         os: [ubuntu-latest, macos-latest]
     runs-on: ${{ matrix.os }}
     steps:
+      - uses: actions/checkout@v2
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@1.0.0
-      - name: Run ShellSpec
-        run: |
-          curl -fsSL https://git.io/shellspec | sh &&
-          shellspec
+        with:
+          scandir: './bin'
+      - name: Install ShellSpec
+        run: curl -fsSL https://github.com/shellspec/shellspec/releases/latest/download/shellspec-dist.tar.gz | tar -xz -C ..
+      - name: Run Shellspec
+        run: bash ../shellspec/shellspec
       - name: Test asdf-vm plugin
         uses: asdf-vm/actions/plugin-test@v1.0.1
         with:
