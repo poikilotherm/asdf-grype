@@ -18,6 +18,10 @@ jobs:
     steps:
       - name: Run ShellCheck
         uses: ludeeus/action-shellcheck@1.0.0
+      - name: Run ShellSpec
+        run: |
+          curl -fsSL https://git.io/shellspec | sh &&
+          shellspec
       - name: Test asdf-vm plugin
         uses: asdf-vm/actions/plugin-test@v1.0.1
         with:
