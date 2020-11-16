@@ -3,7 +3,7 @@
 set -e
 set -o pipefail
 
-ASDF_INSTALL_TYPE=${ASDF_INSTALL_TYPE:-version  }
+ASDF_INSTALL_TYPE=${ASDF_INSTALL_TYPE:-version}
 TMPDIR=${TMPDIR:-/tmp}
 [ -n "$ASDF_INSTALL_VERSION" ] || (>&2 echo 'Missing ASDF_INSTALL_VERSION' && exit 1)
 [ -n "$ASDF_INSTALL_PATH" ] || (>&2 echo 'Missing ASDF_INSTALL_PATH' && exit 1)
@@ -22,8 +22,17 @@ install_grype() {
 
 	mkdir -p "${bin_install_path}"
 	echo "Downloading and extracting grype from ${download_url}"
-	curl -sS -L "$download_url" | tar -xz -C "$tmp_path"
-  mv "$tmp_path/grype" "$bin_path"
+
+	if [ "x$(get_arch)" == "xlinux" ]; then
+		curl -sS -L "$download_url" | tar -xz -C "$tmp_path"
+  	mv "$tmp_path/grype" "$bin_path"
+
+	elif [ "x$(get_arch)" == "xdarwin" ]; then
+		curl -sS -L "$download_url" -o "$tmp_path/grype.zip"
+		unzip "$tmp_path/grype.zip" -d "$tmp_path"
+		mv "$tmp_path/grype" "$bin_path"
+	fi
+
 	chmod +x "$bin_path"
 }
 
@@ -33,10 +42,18 @@ get_arch() {
 
 get_download_url() {
 	local version="$1"
+	local suffix
 	local platform
   platform="$(get_arch)"
+	suffix="tar.gz"
 
-	echo "https://github.com/anchore/grype/releases/download/v${version}/grype_${version}_${platform}_amd64.tar.gz"
+	if [ "x${platform}" == "xdarwin" ]; then
+		suffix="zip"
+	fi
+
+	echo "https://github.com/anchore/grype/releases/download/v${version}/grype_${version}_${platform}_amd64.${suffix}"
 }
+
+${__SOURCED__:+return}
 
 install_grype "$ASDF_INSTALL_TYPE" "$ASDF_INSTALL_VERSION" "$ASDF_INSTALL_PATH"
