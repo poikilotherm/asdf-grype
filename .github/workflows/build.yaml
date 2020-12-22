@@ -26,7 +26,7 @@ jobs:
       - name: Run Shellspec
         run: bash ../shellspec/shellspec
       - name: Test asdf-vm plugin
-        uses: asdf-vm/actions/plugin-test@v1.0.1
+        uses: asdf-vm/actions/plugin-test@v1.1.0
         with:
           command: grype version
         env:
