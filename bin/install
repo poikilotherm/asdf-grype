@@ -29,18 +29,35 @@ install_grype() {
 	chmod +x "$bin_path"
 }
 
-get_arch() {
+get_platform() {
 	uname | tr '[:upper:]' '[:lower:]'
+}
+
+get_arch() {
+	local arch
+	if [ "$(uname -m)" = "x86_64" ]; then
+		arch="amd64"
+	elif [ "$(uname -m)" = "aarch64" ]; then
+		arch="arm64"
+	elif [ "$(uname -m)" = "arm64" ]; then
+		arch="arm64"
+	elif [ "$(uname -m)" = "armv7l" ]; then
+		arch="armv7"
+	else
+		arch="386"
+	fi
+	echo "${arch}"
 }
 
 get_download_url() {
 	local version="$1"
 	local suffix
 	local platform
-	platform="$(get_arch)"
+	platform="$(get_platform)"
+	arch="$(get_arch)"
 	suffix="tar.gz"
 
-	echo "https://github.com/anchore/grype/releases/download/v${version}/grype_${version}_${platform}_amd64.${suffix}"
+	echo "https://github.com/anchore/grype/releases/download/v${version}/grype_${version}_${platform}_${arch}.${suffix}"
 }
 
 ${__SOURCED__:+return}
