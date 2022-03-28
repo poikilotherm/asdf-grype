@@ -11,27 +11,20 @@ TMPDIR=${TMPDIR:-/tmp}
 install_grype() {
 	#local install_type="$1"
 	local version="$2"
-  local install_path="$3"
-  local bin_install_path="$install_path/bin"
-  local bin_path="${bin_install_path}/grype"
+	local install_path="$3"
+	local bin_install_path="$install_path/bin"
+	local bin_path="${bin_install_path}/grype"
 
-  local tmp_path
-  tmp_path="$(mktemp -d)"
+	local tmp_path
+	tmp_path="$(mktemp -d)"
 	local download_url
-  download_url=$(get_download_url "$version")
+	download_url=$(get_download_url "$version")
 
 	mkdir -p "${bin_install_path}"
 	echo "Downloading and extracting grype from ${download_url}"
 
-	if [ "x$(get_arch)" == "xlinux" ]; then
-		curl -sS -L "$download_url" | tar -xz -C "$tmp_path"
-  	mv "$tmp_path/grype" "$bin_path"
-
-	elif [ "x$(get_arch)" == "xdarwin" ]; then
-		curl -sS -L "$download_url" -o "$tmp_path/grype.zip"
-		unzip "$tmp_path/grype.zip" -d "$tmp_path"
-		mv "$tmp_path/grype" "$bin_path"
-	fi
+	curl -sS -L "$download_url" | tar -xz -C "$tmp_path"
+	mv "$tmp_path/grype" "$bin_path"
 
 	chmod +x "$bin_path"
 }
@@ -44,12 +37,8 @@ get_download_url() {
 	local version="$1"
 	local suffix
 	local platform
-  platform="$(get_arch)"
+	platform="$(get_arch)"
 	suffix="tar.gz"
-
-	if [ "x${platform}" == "xdarwin" ]; then
-		suffix="zip"
-	fi
 
 	echo "https://github.com/anchore/grype/releases/download/v${version}/grype_${version}_${platform}_amd64.${suffix}"
 }
