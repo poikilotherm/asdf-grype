@@ -43,10 +43,10 @@ get_arch() {
   local arch=$(uname -m)
 
   case "${arch}" in
-    x86_64) echo "amd64" ;;
-    aarch64) echo "arm64" ;;
-    armv8l) echo "arm64" ;;
-    arm64) echo "arm64" ;;
+  x86_64) echo "amd64" ;;
+  aarch64) echo "arm64" ;;
+  armv8l) echo "arm64" ;;
+  arm64) echo "arm64" ;;
   esac
 }
 
