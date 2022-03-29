@@ -2,7 +2,6 @@
 
 set -euo pipefail
 
-# TODO: Ensure this is the correct GitHub homepage where releases can be downloaded for grype.
 GH_REPO="https://github.com/anchore/grype"
 TOOL_NAME="grype"
 TOOL_TEST="grype version"
@@ -36,13 +35,29 @@ list_all_versions() {
   list_github_tags
 }
 
+get_platform() {
+  uname -s | tr '[:upper:]' '[:lower:]'
+}
+
+get_arch() {
+  local arch=$(uname -m)
+
+  case "${arch}" in
+    x86_64) echo "amd64" ;;
+    aarch64) echo "arm64" ;;
+    armv8l) echo "arm64" ;;
+    arm64) echo "arm64" ;;
+  esac
+}
+
 download_release() {
-  local version filename url
+  local version filename url arch platform
   version="$1"
   filename="$2"
+  arch="$(get_arch)"
+  platform="$(get_platform)"
 
-  # TODO: Adapt the release URL convention for grype
-  url="$GH_REPO/archive/v${version}.tar.gz"
+  url="$GH_REPO/releases/download/v${version}/grype_${version}_${platform}_${arch}.tar.gz"
 
   echo "* Downloading $TOOL_NAME release $version..."
   curl "${curl_opts[@]}" -o "$filename" -C - "$url" || fail "Could not download $url"
